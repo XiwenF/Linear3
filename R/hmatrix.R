@@ -11,4 +11,4 @@ h_matrix <- function(formula){
   return(result_lev)
 }
 
-lm(Y~X)
+
