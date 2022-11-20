@@ -1,18 +1,24 @@
-Package: Linear3
+Package: linearregression
 Type: Package
 Title: construct linear regression model
 Version: 0.1.0
 Author: Xiwen Feng
 Maintainer: Xiwen Feng <xiwenf@umich.edu> 
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Mimic existing R functions for linear regression and ANOVA. Compute leverage values and three commonly used resisuals (standardized, internally studentized, and externally studentized residuals), as well as diagnostic statistics for identifying outliers (DFFITS, Cook's Distance, and COVRATIO) with their respective plotting functions.  
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.2
+Depends:
+    stats,
+    tidyr,
+    ggplot2
 Suggests: 
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    car,
+    ggbeeswarm,
+    covr
 VignetteBuilder: knitr
 Config/testthat/edition: 3

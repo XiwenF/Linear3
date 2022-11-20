@@ -1,7 +1,5 @@
-h_matrix <- function(formula){
-  X <- model.matrix(formula)
-  H <- X %*% solve(t(X) %*% X) %*% t(X)
-  leverage <- diag(H)
+h_matrix <- function(lr.model){
+  leverage <- lr.model$leverage
   #which subject has the maximum value of the leverage
   max.lev <- leverage[which.max(leverage)]
   #what subjects are outliers in the X space, and their leverage values

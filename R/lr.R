@@ -1,28 +1,13 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
-
-lr <- function(formula,data, include.intercept = TRUE, to.predict = NULL, na.action = 'omit') {
-  #get indexes of which covariates to keep
-  covariates<-all.vars(formula)
-  index<-rep(0,length(covariates))
-  for (i in 1:length(covariates)){
-    index[i]<-which(colnames(data)==covariates[i])
+lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action = 'omit') {
+  #get indices of which covariates to keep
+  covar<-all.vars(formula)
+  index<-rep(0,length(covar))
+  for (i in 1:length(covar)){
+    index[i]<-which(colnames(data)==covar[i])
   }
   data<-data[,index]
 
-  #Deal with missing value
+  #Handle missing values
   if(anyNA(data)==TRUE){
     if(na.action == 'omit'){
       data<-na.omit(data)
@@ -35,7 +20,7 @@ lr <- function(formula,data, include.intercept = TRUE, to.predict = NULL, na.act
     }
   }
 
-   n<-nrow(data)
+  n<-nrow(data)
  if(include.intercept == TRUE){
    p <- length(labels(terms(formula))) + 1
    X <- matrix(c(rep(1,n), as.matrix(Cdata[labels(terms(formula))])), n, p)
@@ -45,11 +30,11 @@ lr <- function(formula,data, include.intercept = TRUE, to.predict = NULL, na.act
  }
  Y <- as.matrix(data[as.character(formula[[2]])], n, 1)
 
-  # dimension check
+  # Dimensional inspection
  if(nrow(Y) != nrow(X)) {
-   stop("Number of the outcomes and observations do not match.")
+   stop("The number of predicted value and observed values does not match.")
  } else if(nrow(X) < ncol(X)) {
-   stop("Number of observations is less than predictors.")
+   stop("The number of observed values is less than the predicted value.")
  }
 
  # Betas
@@ -82,13 +67,13 @@ lr <- function(formula,data, include.intercept = TRUE, to.predict = NULL, na.act
  #T scores and P-values
  df <- n-p
  var_cov_beta <- as.vector((t(resid) %*% resid) / (n-p)) * solve(t(X) %*% X)
- std.error <- sqrt(diag(var_cov_beta))
- t_value <- betas / std.error
+ serror <- sqrt(diag(var_cov_beta))
+ t_value <- betas / serror
  p_value <- rep(0, length(betas))
  for (i in 1:length(betas)) {
    p_value[i] <- 2*pt(q=abs(t_value[i]), df=df, lower.tail=FALSE)
  }
- Coeff_summary <- cbind(betas, std.error, t_value, p_value)
+ Coeff_summary <- cbind(betas, serror, t_value, p_value)
  colnames(Coeff_summary) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
  sig <- c()
  sig <- sapply(1:length(p_value), function(i) {
@@ -109,8 +94,8 @@ lr <- function(formula,data, include.intercept = TRUE, to.predict = NULL, na.act
  R2_adj <- 1 - (SSE/(n-p))/(SSY/(n-1))
 
  #95% confidence
- LB <- betas - qt(0.05/2, df, lower.tail = FALSE)*std.error
- UB <- betas + qt(0.05/2, df, lower.tail = FALSE)*std.error
+ LB <- betas - qt(0.05/2, df, lower.tail = FALSE)*serror
+ UB <- betas + qt(0.05/2, df, lower.tail = FALSE)*serror
  CI_95 <- cbind(LB, UB)
  colnames(CI_95) <- c("2.5%", "97.5%")
 
@@ -125,12 +110,12 @@ lr <- function(formula,data, include.intercept = TRUE, to.predict = NULL, na.act
  p_val_F <- pf(F_stat, numdf, dendf, lower.tail = FALSE)
 
  #predict
- if(!is.null(to.predict)){
+ if(!is.null(predict)){
    if(include.intercept == TRUE){
-     predicted <- cbind(1, to.predict) %*% beta
+     predicted <- cbind(1, predict) %*% beta
      colnames(predicted) <- "Predicted Values"
    } else {
-     predicted <- to.predict %*% beta
+     predicted <- predict %*% beta
      colnames(predicted) <- "Predicted Values"
    }
  } else {
@@ -145,6 +130,7 @@ lr <- function(formula,data, include.intercept = TRUE, to.predict = NULL, na.act
                 ex_stud_res = r_i,
                 fitted.values = fitted(),
                 sigma = as.vector(sigma),
+                hat_matrix = H,
                 leverage = leverage,
                 df = df,
                 rank = p,
