@@ -38,17 +38,16 @@
 #' }
 #'
 #'@examples
-#'Annette Dobson (1990) "An Introduction to Generalized Linear Models".
-#'Page 9: Plant Weight Data.
-#'ctl <- c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
-#'trt <- c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
-#'lr(ctl ~ trt , mtcars)$coefficients ## Obtain beta coefficient estimates
-#'lr(ctl ~ trt, mtcars)$coeff_summary ## Obtain summary of beta coefficients
-#'lr(ctl ~ trt, mtcars)$sigma ## Obtain residual standard error
-#'lr(ctl ~ trt, mtcars)$CI ## Obtain 95% confidence interval
-#'lr(ctl ~ trt, mtcars, include.intercept = FALSE) ## omitting intercept
-#'lr(ctl ~ trt, mtcars, include.intercept = FALSE)$df ## Extract degrees of freedom when fitting a model without an intercept
-#'lr(ctl ~ trt, mtcars, to.predict = matrix(c(mean(mtcars$mpg), mean(mtcars$wt)), 1, 2))$predicted
+#'data(mtcars)
+#'attach(mtcars)
+#'lr(mpg ~ cyl + wt , mtcars)$coefficients ## Obtain beta coefficient estimates
+#'lr(mpg ~ cyl + wt, mtcars)$coeff_summary ## Obtain summary of beta coefficients
+#'lr(mpg ~ cyl + wt, mtcars)$sigma ## Obtain residual standard error
+#'lr(mpg ~ cyl + wt, mtcars)$CI ## Obtain 95% confidence interval
+#'lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE) ## omitting intercept
+#'lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE)$df ## Extract degrees of freedom when fitting a model without an intercept
+#'lr(mpg ~ cyl + wt, mtcars, to.predict = matrix(c(mean(mtcars$mpg), mean(mtcars$wt)), 1, 2))$predicted
+#'detach(mtcars)
 #'
 #'@importFrom stats model.matrix na.omit pf pt quantile
 #'
@@ -114,8 +113,8 @@ lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action
  sigma <- sqrt((t(resid) %*% resid) / (n-p))
  ## Standardized residuals
  zi <- resid/as.numeric(sigma)
- H <- X %*% solve(t(X) %*% X) %*% t(X)
- leverage <- diag(H)
+ Hat <- X %*% solve(t(X) %*% X) %*% t(X)
+ leverage <- diag(Hat)
  ## studentized residuals
  ri <- resid/as.numeric(sigma)/sqrt(1-leverage)
  ## Externally studentized residuals
@@ -187,7 +186,7 @@ lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action
                 ex_stud_res = r_i,
                 fitted.values = fitted(),
                 sigma = as.vector(sigma),
-                hat_matrix = H,
+                hat_matrix = Hat,
                 leverage = leverage,
                 df = df,
                 rank = p,
