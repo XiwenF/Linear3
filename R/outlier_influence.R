@@ -1,4 +1,47 @@
-outlier_influence <- function(data, lr.model, option = c("dffits", "cd" , "cvr"), high.influence = FALSE){
+#'outlierinfluence
+#'
+#'outlierinfluence computes three diagnostic statistics for measuring points of influence:
+#' \describe{
+#'   \item{DIFFTS}{Difference in the fitted value when ith observation is removed}
+#'   \item{Cook's Distance}{shows the influence of each observation on the fitted response values}
+#'   \item{COVRATIO}{influence on variance-covariance matrix}
+#' }
+#'
+#'@usage
+#'outlierinfluence(data, lr.model,
+#'   option = c("dffits", "cd" , "cvr"),
+#'     high.influence = FALSE)
+#'
+#'@param data A data frame containing the variables in the model
+#'@param lr.model Take an R object, returned by \link[Linear3]{lr}
+#'@param option Which measure affecting the diagnosis should be calculated.
+#'"dffits" refers to DFFITS, "cd" refers to Cook's distance,
+#'"cvr" refers to COVRATIO
+#'@param high.influence (Default)FALSE; if TRUE, influential observations and their
+#'respective diagnostic statistics will be returned.
+#'
+#'
+#'
+#'@return  If high.influence is set to "TRUE", each diagnostic stat will return
+#'a list containing two elements.
+#'\itemize{
+#'   \item{dffits, Cook's Distance, COVRATIO} - {depends on which option is chosen}
+#'   \item{outliers} - {which observations are considered influential}
+#' }
+#'
+#'@examples
+#'##Annette Dobson (1990) "An Introduction to Generalized Linear Models".
+#'##Page 9: Plant Weight Data.
+#'ctl <- c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
+#'trt <- c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
+#'model <- lr(ctl~trt, mtcars)
+#'outlierinfluence(mtcars, model, option = c("dffits"))
+#'outlierinfluence(mtcars, model, option = c("cd"))
+#'outlierinfluence(mtcars, model, option = c("cvr"), high.influence = TRUE)
+#'
+#'@export
+#'
+outlierinfluence <- function(data, lr.model, option = c("dffits", "cd" , "cvr"), high.influence = FALSE){
   ex_res <- res_3(data,lr.model, r="ex")
   int_res <- res_3(data, lr.model, r="int")
   fit_res <- lr.model$residuals

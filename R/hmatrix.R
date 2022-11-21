@@ -1,3 +1,27 @@
+#'h_matrix
+#'
+#'Finds the index of the maximum leverage value
+#'
+#'@param lr.model Take an R object, returned by \link[Linear3]{lr}
+#'
+#'@return  A checklist that includes the following:
+#' \itemize{
+#'   \item{maximum hi} - {Which entity has the maximum value of the leverage}
+#'   \item{hi>2*mean(H)} - {Which objects are outliers in the X-space, and their leverage values}
+#' }
+#'
+#'@examples
+#'##Annette Dobson (1990) "An Introduction to Generalized Linear Models".
+#'##Page 9: Plant Weight Data.
+#'ctl <- c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
+#'trt <- c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
+#'model <- lr(ctl~trt, mtcars)
+#'hat_matrix(model)
+#'hat_matrix(model)[1]
+#'hat_matrix(model)[2]
+#'
+#'
+#'@export
 h_matrix <- function(lr.model){
   leverage <- lr.model$leverage
   #which subject has the maximum value of the leverage

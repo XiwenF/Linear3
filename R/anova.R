@@ -1,3 +1,32 @@
+#' anova
+#'
+#' anova is used to obtain an analysis of variance table for a fitted model. It produces the same results as anova(lm( )) for sequential sums of squares
+#' and car::Anova(lm( ), type="III") for partial sums of squares.
+#'
+#' @param formula An object of class "formula": a symbolic description of the model to be fitted. A typical model is the form outcome ~ covariates
+#' where the outcome is a numeric response vector (which people usually denote as Y in statistical formulas) and the covariates are predictors of response.
+#'
+#' @param data A data frame (or an object convertible to a data frame by as.data.frame) containing the variables in the model.
+#'
+#' @param type The type of sum of squares to obtain. Use "Sequential" for sequential sums of squares and "Partial" for partial sums of squares.
+#'
+#' @param na.action Character input, which determines how the regression model should handle missing data. Options include 'omit' (remove rows with missing values), 'fail'(stop regression), or 'impute' (replace missing values with column mean). Defaults to omit if excluded from call.
+#'
+#' @return anova returns anova table in a data.frame.
+#'
+#'@examples
+#'##Annette Dobson (1990) "An Introduction to Generalized Linear Models".
+#'##Page 9: Plant Weight Data.
+#'ctl <- c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
+#'trt <- c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
+#'
+#'anova(ctl ~ trt, mtcars, type = "Partial") ## Get partial SS
+#'anova(ctl ~ trt, mtcars, type = "Sequential") ## Get sequential SS
+#'anova(ctl ~ trt, mtcars, type = "Sequential")["F value"] ## Extract F statistics from ANOVA table
+#'
+#' @export
+#'
+#'
 anova <- function(formula, data, type, na.action = 'omit'){
   #get indexes of which covariates to keep
   covar<-all.vars(formula)
