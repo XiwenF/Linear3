@@ -8,6 +8,8 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+library(bench)
+library(stats)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -24,7 +26,7 @@ library(Linear3)
 
 ```{r}
 lr(mpg ~ cyl + wt, mtcars)
-lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE)
+lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE, na.action = 'impute')
 ```
 
 You can fit a linear regression model with or without the intercept. The `lr( )` function will not explicitly return any results until you extract the desired output with `$`. 
