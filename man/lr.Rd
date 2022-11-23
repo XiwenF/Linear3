@@ -47,16 +47,15 @@ The returned output is a list containing at least the following:
 A fitted linear regression model was used
 }
 \examples{
-Annette Dobson (1990) "An Introduction to Generalized Linear Models".
-Page 9: Plant Weight Data.
-ctl <- c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
-trt <- c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
-lr(ctl ~ trt , mtcars)$coefficients ## Obtain beta coefficient estimates
-lr(ctl ~ trt, mtcars)$coeff_summary ## Obtain summary of beta coefficients
-lr(ctl ~ trt, mtcars)$sigma ## Obtain residual standard error
-lr(ctl ~ trt, mtcars)$CI ## Obtain 95\% confidence interval
-lr(ctl ~ trt, mtcars, include.intercept = FALSE) ## omitting intercept
-lr(ctl ~ trt, mtcars, include.intercept = FALSE)$df ## Extract degrees of freedom when fitting a model without an intercept
-lr(ctl ~ trt, mtcars, to.predict = matrix(c(mean(mtcars$mpg), mean(mtcars$wt)), 1, 2))$predicted
+data(mtcars)
+attach(mtcars)
+lr(mpg ~ cyl + wt , mtcars)$coefficients ## Obtain beta coefficient estimates
+lr(mpg ~ cyl + wt, mtcars)$coeff_summary ## Obtain summary of beta coefficients
+lr(mpg ~ cyl + wt, mtcars)$sigma ## Obtain residual standard error
+lr(mpg ~ cyl + wt, mtcars)$CI ## Obtain 95\% confidence interval
+lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE) ## omitting intercept
+lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE)$df ## Extract degrees of freedom when fitting a model without an intercept
+lr(mpg ~ cyl + wt, mtcars, to.predict = matrix(c(mean(mtcars$mpg), mean(mtcars$wt)), 1, 2))$predicted
+detach(mtcars)
 
 }
