@@ -8,7 +8,6 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-library(bench)
 library(stats)
 knitr::opts_chunk$set(
   collapse = TRUE,
