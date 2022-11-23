@@ -5,25 +5,23 @@
 \title{Plot Influential Outliers}
 \usage{
 \itemize{
-  \item{plotdffit(lr.model)} - {Plot a DFFITS graph and indicate the subject of the outlier}
-  \item{plotcd(lr.model)}- {Plot a Cook's Distance graph and indicate the subject of the outlier}
-  \item{plotCVR(lr.model)} - {Plot a COVRATIO graph }
+  \item{plotdffit(lm.model)} - {Plot a DFFITS graph and indicate the subject of the outlier}
+  \item{plotcd(lm.model)}- {Plot a Cook's Distance graph and indicate the subject of the outlier}
 }
 }
 \arguments{
-\item{lr.model}{Take an R object, returned by \link[Linear3]{lr}}
+\item{lm.model}{Take an R object, returned by \link[stats]{lm}}
 }
 \description{
 This set of plotting functions is used to plot
-DFFITS, Cook's Distance, and COVRATIO separately
+DFFITS, Cook's Distance separately
 }
 \examples{
 require(ggplot2)
 data(mtcars)
 attach(mtcars)
-model <- lr(mpg~cyl + wt, mtcars)
+model <- lm(mpg~cyl + wt, mtcars)
 plotdffits(model)
 plotcd(model)
-plotCVR(model)
 
 }

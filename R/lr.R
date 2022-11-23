@@ -53,7 +53,6 @@
 #'
 #'@export
 #'
-
 lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action = 'omit') {
   #get indices of which covariates to keep
   covar<-all.vars(formula)
