@@ -14,6 +14,104 @@ knitr::opts_chunk$set(
 )
 ```
 
+The Linear3 package aims to provide almost all the information needed for linear regression, with the exception of diagnostics. The `lr()` function mimics the output of `lm()`, `summary(lm())`, `confint()`, `hatvalues(lm())`, `rsstandard()` and `rstudent()` . The `anova()` function mimics the output of the `anova(lm( ))` function, for continuous sums of squares, and the output of the `car::Anova(lm( ), type="III")` function, for partial sum of squares.
+
 ```{r setup}
 library(Linear3)
 ```
+
+## Example of the using `lr( )` function. 
+
+```{r}
+lr(mpg ~ cyl + wt, mtcars)
+lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE)
+```
+
+You can fit a linear regression model with or without the intercept. The `lr( )` function will not explicitly return any results until you extract the desired output with `$`. 
+
+```{r}
+model <- lr(mpg ~ cyl + wt, mtcars)
+names(model)
+```
+
+The `lr( )` function is very general, it contains a lot of information. We can choose from above to get the desired output. Let's demonstrate with a few examples and compare the results with the original R function to see if they produce the same results. 
+
+```{r}
+model$coeff_summary
+model.r = lm(mpg ~ cyl + wt, mtcars)
+summary(model.r)$coefficients
+all.equal(as.numeric(model$coeff_summary), as.numeric(summary(model.r)$coefficients))
+```
+
+Since we're only interested in whether `lr( )` and `lm( )` produce the same numerical result, I coerce both outputs to the "numeric" class. With `all.equal( )`, we observe that the outputs are indeed equal. So what about its speed? We next compare their speed via `bench::mark( )`.
+
+```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
+library(bench)
+plot(mark(as.numeric(model$coeff_summary), as.numeric(summary(model.r)$coefficients)))
+```
+
+Using this naive built-in dataset `mtcars`, the `lr( )` function performs better than the `lm( )` function. One of the main reasosn why `lr(  )` is superior to the built-in `r` function is that there is no need to call another function for coefficient aggregation. 
+
+Next, let's demonstrate two more examples using `lr( )` and compare with the original `r` function.
+
+#### _(a)_ Usage of `to.predict` parameter
+```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
+lrpredict <- lr(cyl ~ mpg + wt, mtcars, 
+               to.predict = matrix(c(mean(mtcars$mpg), 18, mean(mtcars$wt), 4), 2, 2))$predicted
+print(lrpredict)
+lmpredict <- predict(lm(cyl~mpg+wt,mtcars), newdata<-data.frame(mpg=c(mean(mtcars$mpg),18), 
+                                                             wt = c(mean(mtcars$wt),4)))
+print(lmpredict)
+all.equal(as.numeric(lrpredict), as.numeric(lmpredict))
+plot(mark(as.numeric(lrpredict), as.numeric(lmpredict)))
+```
+
+Both function yields the same predicted values;however, the built-in `r` function performs slightly better than `lr( )` in terms of speed. 
+
+#### _(b)_ Usage of `include.intercept` parameter
+```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
+model2 <- lr(mpg ~ cyl + wt , mtcars, include.intercept = FALSE)
+model.r2 <- lm(mpg ~ -1 + cyl + wt , mtcars)
+model2$CI
+confint(model.r2)
+all.equal(as.numeric(model2$CI), as.numeric(confint(model.r2)))
+plot(mark(as.numeric(model2$CI), as.numeric(confint(model.r2))))
+```
+
+Also, the numeric outputs of both functions is the same. However, `lr( )` is superior to the built-in `r` function because we don't need to call another function to compute confidence intervals for the fitted model. 
+
+## Example of the using `ANOVA( )` function.
+
+We can choose to obtain an ANOVA table for sequential sums of squares or partial sums of squares. 
+
+Note: `ANOVA( )` automatically fit the model with an intercept.
+
+#### _(a)_ Example of obtaining sequential sums of squares. 
+
+```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
+ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Sequential")
+anova(lm(mpg ~ cyl + wt + disp, mtcars))
+ANOVAnumeric <- as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")))
+anovanumeric <- as.numeric(unlist(anova(lm(mpg ~ cyl + wt, mtcars))))
+all.equal(ANOVAnumeric, anovanumeric)
+plot(mark(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential"))), as.numeric(unlist(anova(lm(mpg ~ cyl + wt, mtcars))))))
+```
+
+From above, we have shown that `ANOVA( )` and built-in function `anova( )` via `all.equal( )` output the same numerical result. `ANOVA( )` is actually faster than `anova( )`.
+
+#### _(b)_ Example of obtaining partial sums of squares. 
+```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
+require("car")
+ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Partial")
+Anova(lm(mpg ~ cyl + wt + disp, mtcars), type = "III")
+ANOVAnumeric <- as.numeric(unlist(ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Partial")))
+Anovanumeric <- as.numeric(unlist(Anova(lm(mpg ~ cyl + wt + disp, mtcars), type = "III")))
+all.equal(ANOVAnumeric, Anovanumeric)
+plot(mark(as.numeric(unlist(ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Partial"))), as.numeric(unlist(Anova(lm(mpg ~ cyl + wt + disp, mtcars), type = "III")))))
+```
+
+We show again that `ANOVA( )` and the original `r` function `Anova( )` from the car package output the same numerical results via `all.equal( )`. `ANOVA( )` is more efficient than `Anova( )` in terms of speed.
+
+Hint: Since the output of `ANOVA( )` is a data.frame, we can use all the means of data frame to index or select the required elements such as `ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Partial")["Sum Sq"]`.
+
+

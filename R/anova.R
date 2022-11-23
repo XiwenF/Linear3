@@ -1,6 +1,6 @@
-#' anova
+#' ANOVA
 #'
-#' anova is used to obtain an analysis of variance table for a fitted model. It produces the same results as anova(lm( )) for sequential sums of squares
+#' ANOVA is used to obtain an analysis of variance table for a fitted model. It produces the same results as anova(lm( )) for sequential sums of squares
 #' and car::Anova(lm( ), type="III") for partial sums of squares.
 #'
 #' @param formula An object of class "formula": a symbolic description of the model to be fitted. A typical model is the form outcome ~ covariates
@@ -12,20 +12,20 @@
 #'
 #' @param na.action Character input, which determines how the regression model should handle missing data. Options include 'omit' (remove rows with missing values), 'fail'(stop regression), or 'impute' (replace missing values with column mean). Defaults to omit if excluded from call.
 #'
-#' @return anova returns anova table in a data.frame.
+#' @return ANOVA returns anova table in a data.frame.
 #'
 #' @examples
 #' data(mtcars)
 #' attach(mtcars)
-#' anova(mpg ~ cyl + wt + qsec + disp, mtcars, type = "Partial") ## Get partial SS
-#' anova(mpg ~ cyl + wt + qsec + disp, mtcars, type = "Sequential") ## Get sequential SS
-#' anova(mpg ~ cyl + wt + qsec + disp, mtcars, type = "Sequential")["F value"] ## Extract F statistics from ANOVA table
+#' ANOVA(mpg ~ cyl + wt + qsec + disp, mtcars, type = "Partial") ## Get partial SS
+#' ANOVA(mpg ~ cyl + wt + qsec + disp, mtcars, type = "Sequential") ## Get sequential SS
+#' ANOVA(mpg ~ cyl + wt + qsec + disp, mtcars, type = "Sequential")["F value"] ## Extract F statistics from ANOVA table
 #' detach(mtcars)
 #'
 #' @export
 #'
 #'
-anova <- function(formula, data, type, na.action = 'omit'){
+ANOVA <- function(formula, data, type, na.action = 'omit'){
   #get indexes of which covariates to keep
   covar<-all.vars(formula)
   index<-rep(0,length(covar))
