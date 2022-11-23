@@ -4,10 +4,7 @@
 \alias{plotdffits}
 \title{Plot Influential Outliers}
 \usage{
-\itemize{
-  \item{plotdffit(lm.model)} - {Plot a DFFITS graph and indicate the subject of the outlier}
-  \item{plotcd(lm.model)}- {Plot a Cook's Distance graph and indicate the subject of the outlier}
-}
+plotdffits(lm.model)
 }
 \arguments{
 \item{lm.model}{Take an R object, returned by \link[stats]{lm}}
