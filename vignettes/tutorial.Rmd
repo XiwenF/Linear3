@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 The Linear3 package aims to provide almost all the information needed for linear regression, with the exception of diagnostics. The `lr()` function mimics the output of `lm()`, `summary(lm())`, `confint()`, `hatvalues(lm())`, `rsstandard()` and `rstudent()` . The `anova()` function mimics the output of the `anova(lm( ))` function, for continuous sums of squares, and the output of the `car::Anova(lm( ), type="III")` function, for partial sum of squares.
 
 ```{r setup}
-library(lrhw4)
+library(Linear3)
 ```
 
 ## Example of the using `lr( )` function. 
