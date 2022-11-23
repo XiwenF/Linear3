@@ -24,7 +24,7 @@ library(Linear3)
 ## Example of the using `lr( )` function. 
 
 ```{r}
-lr(mpg ~ cyl + wt, mtcars)
+lr(mpg ~ cyl + wt, mtcars, na.action = 'impute')
 lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE, na.action = 'impute')
 ```
 
