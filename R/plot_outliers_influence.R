@@ -1,10 +1,9 @@
 #'Plot Influential Outliers
 #'
-#'This set of plotting functions is used to plot
-#'DFFITS, Cook's Distance separately
+#'This set of plotting functions is used to plot DFFITS, Cook's Distance separately
 #'
-#'
-#'\describe{
+#'@usage
+#'\itemize{
 #'   \item{plotdffit(lm.model)} - {Plot a DFFITS graph and indicate the subject of the outlier}
 #'   \item{plotcd(lm.model)}- {Plot a Cook's Distance graph and indicate the subject of the outlier}
 #'}

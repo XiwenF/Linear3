@@ -13,13 +13,10 @@
 \item{lm.model}{Take an R object, returned by \link[stats]{lm}}
 }
 \description{
-This set of plotting functions is used to plot
-DFFITS, Cook's Distance separately
+This set of plotting functions is used to plot DFFITS, Cook's Distance separately
 }
 \examples{
 require(ggplot2)
-data(mtcars)
-attach(mtcars)
 model <- lm(mpg~cyl + wt + qsec + disp, mtcars)
 plotdffits(model)
 plotcd(model)
