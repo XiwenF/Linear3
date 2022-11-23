@@ -109,7 +109,7 @@ ANOVA <- function(formula, data, type, na.action = 'omit'){
     colnames(table) <- c("Sum Sq", "Df", "F value", "Pr(>F)")
     res <- c(SSE, n-p, " ", " ")
     summary <- as.data.frame(rbind(table, res))
-    rownames(summary) <- c("(Intercept)",covariates, "Residuals")
+    rownames(summary) <- c("(Intercept)",covar, "Residuals")
   }
   return(summary)
 }
