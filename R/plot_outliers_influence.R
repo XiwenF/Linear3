@@ -2,11 +2,6 @@
 #'
 #'This set of plotting functions is used to plot DFFITS, Cook's Distance separately
 #'
-#'@usage
-#'{plotdffit(lm.model)} - {Plot a DFFITS graph and indicate the subject of the outlier}
-#'{plotcd(lm.model)}- {Plot a Cook's Distance graph and indicate the subject of the outlier}
-#'
-#'
 #'@param lm.model Take an R object, returned by \link[stats]{lm}
 #'
 #'@examples

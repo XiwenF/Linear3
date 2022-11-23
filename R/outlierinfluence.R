@@ -41,6 +41,7 @@ outlierinfluence <- function(data, lr.model, option = c("dffits", "cd"), high.in
   int_res <- lr.model$studentized_res
   fit_res <- lr.model$residuals
   n <- nrow(data)
+  p<-lr.model$rank
   MSE <- sum(fit_res^2)/(n-p)
   lev <- lr.model$leverage
   # Difference in the fitted value when ith observation is removed
