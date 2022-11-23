@@ -20,7 +20,7 @@ DFFITS, Cook's Distance separately
 require(ggplot2)
 data(mtcars)
 attach(mtcars)
-model <- lm(mpg~cyl + wt, mtcars)
+model <- lm(mpg~cyl + wt + qsec + disp, mtcars)
 plotdffits(model)
 plotcd(model)
 

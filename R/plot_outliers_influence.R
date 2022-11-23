@@ -15,7 +15,7 @@
 #'require(ggplot2)
 #'data(mtcars)
 #'attach(mtcars)
-#'model <- lm(mpg~cyl + wt, mtcars)
+#'model <- lm(mpg~cyl + wt + qsec + disp, mtcars)
 #'plotdffits(model)
 #'plotcd(model)
 #'
@@ -42,13 +42,13 @@ plotdffits <- function(lm.model){
 #plots Cook's Distance and labels the subjects that are outliers
 plotcd <- function(lm.model) {
   p <- lm.model$rank
-  degree <- lm.model$p + lm.model$df
+  degree <- lm.model$rank + lm.model$df.residual
   x <- 1:degree
   cd <- cooks.distance(lm.model)
   plotckd <- data.frame(x, cd)
   colnames(plotckd) <- c("Observation", "CooksDist")
   subcd <- subset(plotckd, CooksDist > 4/degree )
-  ggplot(plot_ckd, aes(Observation, CooksDist, ymax = CooksDist, ymin = 0)) +
+  ggplot(plotckd, aes(Observation, CooksDist, ymax = CooksDist, ymin = 0)) +
     geom_linerange(color = "red") +
     geom_hline(yintercept = 4/degree , color = "blue") +
     labs(title = "Influence Diagnostics: Cook's Distance") +

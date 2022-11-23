@@ -14,10 +14,10 @@ lr(formula, data, include.intercept = TRUE, predict = NULL, na.action = "omit")
 \item{include.intercept}{If the model should be fitted with an intercept, include.intercept = TRUE; if model should be fitted without an intercept,
 then include.intercept = FALSE. The default setting for include.intercept is TRUE.}
 
-\item{na.action}{Character input, which determines how the regression model should handle missing data. Options include 'omit' (remove rows with missing values), 'fail'(stop regression), or 'impute' (replace missing values with column mean). Defaults to omit if excluded from call.}
-
-\item{to.predict}{The default parameter is set to NULL. If you want to use the current model for prediction, enter an n by p matrix (or
+\item{predict}{The default parameter is set to NULL. If you want to use the current model for prediction, enter an n by p matrix (or
 object coercible by as.matrix to a matrix) to get predicted values. n is the number of prediction desired and p is the number of covariates included in the model.}
+
+\item{na.action}{Character input, which determines how the regression model should handle missing data. Options include 'omit' (remove rows with missing values), 'fail'(stop regression), or 'impute' (replace missing values with column mean). Defaults to omit if excluded from call.}
 }
 \value{
 lr doesn't explicitly return anything unless you extract the value with $ followed by the name of the desired output.
@@ -55,7 +55,7 @@ lr(mpg ~ cyl + wt, mtcars)$sigma ## Obtain residual standard error
 lr(mpg ~ cyl + wt, mtcars)$CI ## Obtain 95\% confidence interval
 lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE) ## omitting intercept
 lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE)$df ## Extract degrees of freedom when fitting a model without an intercept
-lr(mpg ~ cyl + wt, mtcars, to.predict = matrix(c(mean(mtcars$mpg), mean(mtcars$wt)), 1, 2))$predicted
+lr(mpg ~ cyl + wt, mtcars, predict = matrix(c(mean(mtcars$mpg), mean(mtcars$wt)), 1, 2))$predicted
 detach(mtcars)
 
 }
