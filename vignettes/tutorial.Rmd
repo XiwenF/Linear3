@@ -8,7 +8,6 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-library(stats)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -24,8 +23,8 @@ library(Linear3)
 ## Example of the using `lr( )` function. 
 
 ```{r}
-#lr(mpg ~ cyl + wt, mtcars, include.intercept = TRUE, predict = NULL, na.action = 'omit')
-#lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE, predict = NULL, na.action = 'impute')
+lr(mpg ~ cyl + wt, mtcars)
+lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE, predict = NULL, na.action = 'omit')
 ```
 
 You can fit a linear regression model with or without the intercept. The `lr( )` function will not explicitly return any results until you extract the desired output with `$`. 
@@ -41,14 +40,14 @@ The `lr( )` function is very general, it contains a lot of information. We can c
 model$coeff_summary
 model.r <- lm(mpg ~ cyl + wt, mtcars)
 summary(model.r)$coefficients
-all.equal(as.numeric(model$coeff_summary), as.numeric(summary(model.r)$coefficients))
+all.equal(as.numeric(model$coeff_summary),as.numeric(summary(model.r)$coefficients))
 ```
 
 Since we're only interested in whether `lr( )` and `lm( )` produce the same numerical result, I coerce both outputs to the "numeric" class. With `all.equal( )`, we observe that the outputs are indeed equal. So what about its speed? We next compare their speed via `bench::mark( )`.
 
 ```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
 library(bench)
-plot(mark(as.numeric(model$coeff_summary), as.numeric(summary(model.r)$coefficients)))
+plot(mark(as.numeric(model$coeff_summary),as.numeric(summary(model.r)$coefficients)))
 ```
 
 Using this naive built-in dataset `mtcars`, the `lr( )` function performs better than the `lm( )` function. One of the main reasosn why `lr(  )` is superior to the built-in `r` function is that there is no need to call another function for coefficient aggregation. 
@@ -59,8 +58,7 @@ Next, let's demonstrate two more examples using `lr( )` and compare with the ori
 ```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
 lrpredict <- lr(cyl ~ mpg + wt, mtcars, predict = matrix(c(mean(mtcars$mpg),18,mean(mtcars$wt), 4), 2, 2))$predicted
 print(lrpredict)
-lmpredict <- predict(lm(cyl~mpg+wt,mtcars), newdata=data.frame(mpg=c(mean(mtcars$mpg),18), 
-                                                             wt = c(mean(mtcars$wt),4)))
+lmpredict <- predict(lm(cyl~mpg+wt,mtcars),newdata=data.frame(mpg=c(mean(mtcars$mpg),18), wt = c(mean(mtcars$wt),4)))
 print(lmpredict)
 all.equal(as.numeric(lrpredict), as.numeric(lmpredict))
 plot(mark(as.numeric(lrpredict), as.numeric(lmpredict)))
@@ -89,12 +87,10 @@ Note: `ANOVA( )` automatically fit the model with an intercept.
 #### _(a)_ Example of obtaining sequential sums of squares. 
 
 ```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
-require("datasets")
-require("bench")
 ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Sequential")
-anova(lm(mpg ~ cyl + wt + disp, mtcars))
+stats::anova(lm(mpg ~ cyl + wt + disp, mtcars))
 ANOVAnumeric <- as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")))
-anovanumeric <- as.numeric(unlist(anova(lm(mpg ~ cyl + wt, mtcars))))
+anovanumeric <- as.numeric(unlist(stats::anova(lm(mpg ~ cyl + wt, mtcars))))
 all.equal(ANOVAnumeric, anovanumeric)
 plot(mark(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential"))), as.numeric(unlist(stats::anova(lm(mpg ~ cyl + wt, mtcars))))))
 ```

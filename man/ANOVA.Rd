@@ -24,11 +24,9 @@ ANOVA is used to obtain an analysis of variance table for a fitted model. It pro
 and car::Anova(lm( ), type="III") for partial sums of squares.
 }
 \examples{
-data(mtcars)
-attach(mtcars)
+
 ANOVA(mpg ~ cyl + wt + qsec + disp, mtcars, type = "Partial") ## Get partial SS
 ANOVA(mpg ~ cyl + wt + qsec + disp, mtcars, type = "Sequential") ## Get sequential SS
 ANOVA(mpg ~ cyl + wt + qsec + disp, mtcars, type = "Sequential")["F value"] ## Extract F statistics from ANOVA table
-detach(mtcars)
 
 }

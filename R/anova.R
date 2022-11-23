@@ -15,19 +15,22 @@
 #' @return ANOVA returns anova table in a data.frame.
 #'
 #' @examples
-#' data(mtcars)
-#' attach(mtcars)
+#'
 #' ANOVA(mpg ~ cyl + wt + qsec + disp, mtcars, type = "Partial") ## Get partial SS
 #' ANOVA(mpg ~ cyl + wt + qsec + disp, mtcars, type = "Sequential") ## Get sequential SS
 #' ANOVA(mpg ~ cyl + wt + qsec + disp, mtcars, type = "Sequential")["F value"] ## Extract F statistics from ANOVA table
-#' detach(mtcars)
 #'
 #' @export
 #'
 #'
 ANOVA <- function(formula, data, type, na.action = 'omit'){
-  covar <- attr(terms(formula(formula)), which = "term.labels")
-  data <- na.omit(data)
+  #get indices of which covariates to keep
+  covar<-all.vars(formula)
+  index<-rep(0,length(covar))
+  for (i in 1:length(covar)){
+    index[i]<-which(colnames(data)==covar[i])
+  }
+  data<-data[,index]
   n <- nrow(data)
   p<-length(covar)+1
   X <- matrix(c(rep(1,n), as.matrix(data[covar])), n, p)
