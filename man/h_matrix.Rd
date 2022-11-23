@@ -23,9 +23,9 @@ Finds the index of the maximum leverage value
 data(mtcars)
 attach(mtcars)
 model <- lr(mpg ~ cyl + wt, mtcars)
-hat_matrix(model)
-hat_matrix(model)[1]
-hat_matrix(model)[2]
+h_matrix(model)
+h_matrix(model)[1]
+h_matrix(model)[2]
 detach(mtcars)
 
 }
