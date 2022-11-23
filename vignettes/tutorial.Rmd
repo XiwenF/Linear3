@@ -9,6 +9,7 @@ vignette: >
 
 ```{r, include = FALSE}
 library(stats)
+library(bench)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
