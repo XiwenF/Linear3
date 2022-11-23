@@ -55,10 +55,9 @@ Using this naive built-in dataset `mtcars`, the `lr( )` function performs better
 
 Next, let's demonstrate two more examples using `lr( )` and compare with the original `r` function.
 
-#### _(a)_ Usage of `to.predict` parameter
+#### _(a)_ Usage of `predict` parameter
 ```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
-lrpredict <- lr(cyl ~ mpg + wt, mtcars, 
-               to.predict = matrix(c(mean(mtcars$mpg), 18, mean(mtcars$wt), 4), 2, 2))$predicted
+lrpredict <- lr(cyl ~ mpg + wt, mtcars, predict = matrix(c(mean(mtcars$mpg),18,mean(mtcars$wt), 4), 2, 2))$predicted
 print(lrpredict)
 lmpredict <- predict(lm(cyl~mpg+wt,mtcars), newdata=data.frame(mpg=c(mean(mtcars$mpg),18), 
                                                              wt = c(mean(mtcars$wt),4)))

@@ -166,10 +166,10 @@ lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action
  #predict
  if(!is.null(predict)){
    if(include.intercept == TRUE){
-     predicted <- cbind(1, predict) %*% beta
+     predicted <- cbind(1, predict) %*% betas
      colnames(predicted) <- "Predicted Values"
    } else {
-     predicted <- predict %*% beta
+     predicted <- predict %*% betas
      colnames(predicted) <- "Predicted Values"
    }
  } else {
@@ -197,6 +197,4 @@ lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action
                 predicted = predicted)
  return(invisible(results))
 }
-model <- lr(mpg ~ cyl + wt, mtcars)
-
 
