@@ -15,6 +15,7 @@ Suggests:
     testthat (>= 3.0.0),
     car,
     bench,
-    ggbeeswarm
+    ggbeeswarm,
+    stats
 VignetteBuilder: knitr
 Config/testthat/edition: 3
