@@ -96,7 +96,7 @@ stats::anova(lm(mpg ~ cyl + wt + disp, mtcars))
 ANOVAnumeric <- as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")))
 anovanumeric <- as.numeric(unlist(stats::anova(lm(mpg ~ cyl + wt, mtcars))))
 all.equal(ANOVAnumeric, anovanumeric)
-plot(mark(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential"))), as.numeric(unlist(anova(lm(mpg ~ cyl + wt, mtcars))))))
+plot(mark(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential"))), as.numeric(unlist(stats::anova(lm(mpg ~ cyl + wt, mtcars))))))
 ```
 
 From above, we have shown that `ANOVA( )` and built-in function `anova( )` via `all.equal( )` output the same numerical result. `ANOVA( )` is actually faster than `anova( )`.
