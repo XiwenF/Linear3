@@ -26,7 +26,7 @@
 #'
 #'
 ANOVA <- function(formula, data, type, na.action = 'omit'){
-  #get indexes of which covariates to keep
+  #get indices of which covariates to keep
   covar<-all.vars(formula)
   index<-rep(0,length(covar))
   for (i in 1:length(covar)){
@@ -34,13 +34,8 @@ ANOVA <- function(formula, data, type, na.action = 'omit'){
   }
   data<-data[,index]
   n <- nrow(data)
-  if(include.intercept == TRUE){
-    p <- length(labels(terms(formula))) + 1
-    X <- matrix(c(rep(1,n), as.matrix(Cdata[labels(terms(formula))])), n, p)
-  } else {
-    p <- length(labels(terms(formula)))
-    X <- as.matrix(data[labels(terms(formula))], n, p)
-  }
+  p<-length(covar)+1
+  X <- matrix(c(rep(1,n), as.matrix(data[covar])), n, p)
   Y <- as.matrix(data[as.character(formula[[2]])], n, 1)
 
   # Dimensional inspection
@@ -52,19 +47,11 @@ ANOVA <- function(formula, data, type, na.action = 'omit'){
 
   # Betas
   betas <- solve(t(X) %*% X) %*% t(X) %*% Y
-  if(p == (length(labels(terms(formula))) + 1)){
-    rownames(betas) <- c("intercept", labels(terms(formula)))
-    colnames(betas) <- "Coefficients"
-  } else {
-    rownames(betas) <- labels(terms(formula))
-    colnames(betas) <- "Coefficients"
-  }
 
   #Fitted values
   fitted <- X %*% betas
-  names(fitted) <- row.names(data)
 
-  resid <- Y - fitted()
+  resid <- Y - fitted
   SSE <- t(resid) %*% resid
   MSE <- SSE / (n - p) ## Same SSE for all SS
   if(type == "Sequential"){

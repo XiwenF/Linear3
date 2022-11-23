@@ -89,10 +89,12 @@ Note: `ANOVA( )` automatically fit the model with an intercept.
 #### _(a)_ Example of obtaining sequential sums of squares. 
 
 ```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
+library(datasets)
+library(bench)
 ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Sequential")
-anova(lm(mpg ~ cyl + wt + disp, mtcars))
+stats::anova(lm(mpg ~ cyl + wt + disp, mtcars))
 ANOVAnumeric <- as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")))
-anovanumeric <- as.numeric(unlist(anova(lm(mpg ~ cyl + wt, mtcars))))
+anovanumeric <- as.numeric(unlist(stats::anova(lm(mpg ~ cyl + wt, mtcars))))
 all.equal(ANOVAnumeric, anovanumeric)
 plot(mark(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential"))), as.numeric(unlist(anova(lm(mpg ~ cyl + wt, mtcars))))))
 ```
