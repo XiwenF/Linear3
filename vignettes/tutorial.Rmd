@@ -87,26 +87,28 @@ Note: `ANOVA( )` automatically fit the model with an intercept.
 #### _(a)_ Example of obtaining sequential sums of squares. 
 
 ```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
+require("bench")
 require("stats")
 ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Sequential")
 stats::anova(lm(mpg ~ cyl + wt + disp, mtcars))
-MyNumeric = as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")))
-RNumeric = as.numeric(unlist(stats::anova(lm(mpg ~ cyl + wt, mtcars))))
+MyNumeric <- as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")))
+RNumeric <- as.numeric(unlist(stats::anova(lm(mpg ~ cyl + wt, mtcars))))
 all.equal(MyNumeric, RNumeric)
-plot(mark(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential"))), as.numeric(unlist(stats::anova(lm(mpg ~ cyl + wt, mtcars))))))
+#plot(mark(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential"))), as.numeric(unlist(stats::anova(lm(mpg ~ cyl + wt, mtcars))))))
 ```
 
 From above, we have shown that `ANOVA( )` and built-in function `anova( )` via `all.equal( )` output the same numerical result. `ANOVA( )` is actually faster than `anova( )`.
 
 #### _(b)_ Example of obtaining partial sums of squares. 
 ```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
+require("bench")
 require("car")
 ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Partial")
 Anova(lm(mpg ~ cyl + wt + disp, mtcars), type = "III")
 ANOVAnumeric <- as.numeric(unlist(ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Partial")))
 Anovanumeric <- as.numeric(unlist(Anova(lm(mpg ~ cyl + wt + disp, mtcars), type = "III")))
 all.equal(ANOVAnumeric, Anovanumeric)
-plot(mark(as.numeric(unlist(ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Partial"))), as.numeric(unlist(Anova(lm(mpg ~ cyl + wt + disp, mtcars), type = "III")))))
+#plot(mark(as.numeric(unlist(ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Partial"))), as.numeric(unlist(Anova(lm(mpg ~ cyl + wt + disp, mtcars), type = "III")))))
 ```
 
 We show again that `ANOVA( )` and the original `r` function `Anova( )` from the car package output the same numerical results via `all.equal( )`. `ANOVA( )` is more efficient than `Anova( )` in terms of speed.
