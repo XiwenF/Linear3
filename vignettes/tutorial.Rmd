@@ -24,8 +24,8 @@ library(Linear3)
 ## Example of the using `lr( )` function. 
 
 ```{r}
-lr(mpg ~ cyl + wt, mtcars, include.intercept = TRUE, predict = NULL, na.action = 'omit')
-lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE, predict = NULL, na.action = 'impute')
+#lr(mpg ~ cyl + wt, mtcars, include.intercept = TRUE, predict = NULL, na.action = 'omit')
+#lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE, predict = NULL, na.action = 'impute')
 ```
 
 You can fit a linear regression model with or without the intercept. The `lr( )` function will not explicitly return any results until you extract the desired output with `$`. 
