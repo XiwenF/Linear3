@@ -23,6 +23,7 @@ library(Linear3)
 ## Example of the using `lr( )` function. 
 
 ```{r}
+library(datasets)
 lr(mpg ~ cyl + wt, mtcars)
 lr(mpg ~ cyl + wt, mtcars, include.intercept = FALSE)
 ```
