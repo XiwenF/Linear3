@@ -5,7 +5,7 @@
 #'@param lm.model Take an R object, returned by \link[stats]{lm}
 #'
 #'@examples
-#'require(ggplot2)
+#'library(ggplot2)
 #'model <- lm(mpg~cyl + wt + qsec + disp, mtcars)
 #'plotdffits(model)
 #'plotcd(model)

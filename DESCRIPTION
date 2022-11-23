@@ -16,6 +16,7 @@ Suggests:
     car,
     bench,
     ggbeeswarm,
-    stats
+    stats,
+    ggplot2
 VignetteBuilder: knitr
 Config/testthat/edition: 3

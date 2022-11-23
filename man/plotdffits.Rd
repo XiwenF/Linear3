@@ -13,7 +13,7 @@ plotdffits(lm.model)
 This set of plotting functions is used to plot DFFITS, Cook's Distance separately
 }
 \examples{
-require(ggplot2)
+library(ggplot2)
 model <- lm(mpg~cyl + wt + qsec + disp, mtcars)
 plotdffits(model)
 plotcd(model)
