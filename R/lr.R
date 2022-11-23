@@ -108,7 +108,7 @@ lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action
  names(fitted) <- row.names(data)
 
  # Residuals
- resid <- as.vector(y - fitted)
+ resid <- as.vector(Y - fitted)
  names(resid) <- row.names(data)
  sigma <- sqrt((t(resid) %*% resid) / (n-p))
  ## Standardized residuals
