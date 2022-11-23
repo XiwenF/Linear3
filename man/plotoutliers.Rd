@@ -8,6 +8,9 @@ plotoutliers(lm.model, option = c("dffits", "cd"))
 }
 \arguments{
 \item{lm.model}{Take an R object, returned by \link[stats]{lm}}
+
+\item{option}{Which measure affecting the diagnosis should be plotted.
+"dffits" refers to DFFITS, "cd" refers to Cook's distance}
 }
 \description{
 This set of plotting functions is used to plot DFFITS, Cook's Distance separately
