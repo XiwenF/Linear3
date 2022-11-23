@@ -79,7 +79,7 @@ lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action
   n<-nrow(data)
  if(include.intercept == TRUE){
    p <- length(labels(terms(formula))) + 1
-   X <- matrix(c(rep(1,n), as.matrix(Cdata[labels(terms(formula))])), n, p)
+   X <- matrix(c(rep(1,n), as.matrix(data[labels(terms(formula))])), n, p)
  } else {
    p <- length(labels(terms(formula)))
    X <- as.matrix(data[labels(terms(formula))], n, p)
