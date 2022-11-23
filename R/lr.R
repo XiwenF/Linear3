@@ -105,11 +105,9 @@ lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action
 
  #Fitted values
  fitted <- X %*% betas
- names(fitted) <- row.names(data)
 
  # Residuals
  resid <- as.vector(Y - fitted)
- names(resid) <- row.names(data)
  sigma <- sqrt((t(resid) %*% resid) / (n-p))
  ## Standardized residuals
  zi <- resid/as.numeric(sigma)
@@ -184,7 +182,7 @@ lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action
                 standardized_res = zi,
                 studentized_res = ri,
                 ex_stud_res = r_i,
-                fitted.values = fitted(),
+                fitted.values = fitted,
                 sigma = as.vector(sigma),
                 hat_matrix = Hat,
                 leverage = leverage,
@@ -199,6 +197,6 @@ lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action
                 predicted = predicted)
  return(invisible(results))
 }
-
+model <- lr(mpg ~ cyl + wt, mtcars)
 
 
