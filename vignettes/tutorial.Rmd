@@ -61,7 +61,7 @@ Next, let's demonstrate two more examples using `lr( )` and compare with the ori
 lrpredict <- lr(cyl ~ mpg + wt, mtcars, 
                to.predict = matrix(c(mean(mtcars$mpg), 18, mean(mtcars$wt), 4), 2, 2))$predicted
 print(lrpredict)
-lmpredict <- predict(lm(cyl~mpg+wt,mtcars), newdata<-data.frame(mpg=c(mean(mtcars$mpg),18), 
+lmpredict <- predict(lm(cyl~mpg+wt,mtcars), newdata=data.frame(mpg=c(mean(mtcars$mpg),18), 
                                                              wt = c(mean(mtcars$wt),4)))
 print(lmpredict)
 all.equal(as.numeric(lrpredict), as.numeric(lmpredict))
