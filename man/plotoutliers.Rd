@@ -15,7 +15,7 @@ This set of plotting functions is used to plot DFFITS, Cook's Distance separatel
 \examples{
 library(ggplot2)
 model <- lm(mpg~cyl + wt + qsec + disp, mtcars)
-plotdffits(model)
-plotcd(model)
+plotoutliers(model,option = "dffits")
+plotoutliers(model,option = "cd")
 
 }

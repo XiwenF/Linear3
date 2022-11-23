@@ -7,8 +7,8 @@
 #'@examples
 #'library(ggplot2)
 #'model <- lm(mpg~cyl + wt + qsec + disp, mtcars)
-#'plotoutliers(model,option == "dffits")
-#'plotoutliers(model,option == "cd")
+#'plotoutliers(model,option = "dffits")
+#'plotoutliers(model,option = "cd")
 #'
 #'@export
 #'
@@ -31,7 +31,6 @@ plotoutliers<-function(lm.model,option= c("dffits", "cd")){
        geom_text(data = sub ,aes(label=Observation))
    } else if ( option == "cd") {
    #plots Cook's Distance and labels the subjects that are outliers
-     plotcd <- function(lm.model) {
      p <- lm.model$rank
      degree <- lm.model$rank + lm.model$df.residual
      x <- 1:degree
@@ -46,5 +45,5 @@ plotoutliers<-function(lm.model,option= c("dffits", "cd")){
        geom_text(data = subcd ,aes(label=Observation))
      }
    }
-}
+
 
