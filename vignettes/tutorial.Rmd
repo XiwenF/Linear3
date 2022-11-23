@@ -38,7 +38,7 @@ The `lr( )` function is very general, it contains a lot of information. We can c
 
 ```{r}
 model$coeff_summary
-model.r = lm(mpg ~ cyl + wt, mtcars)
+model.r <- lm(mpg ~ cyl + wt, mtcars)
 summary(model.r)$coefficients
 all.equal(as.numeric(model$coeff_summary), as.numeric(summary(model.r)$coefficients))
 ```
