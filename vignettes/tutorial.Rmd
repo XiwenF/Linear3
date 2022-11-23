@@ -47,7 +47,7 @@ all.equal(as.numeric(model$coeff_summary), as.numeric(summary(model.r)$coefficie
 Since we're only interested in whether `lr( )` and `lm( )` produce the same numerical result, I coerce both outputs to the "numeric" class. With `all.equal( )`, we observe that the outputs are indeed equal. So what about its speed? We next compare their speed via `bench::mark( )`.
 
 ```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
-library(bench)
+require("bench")
 plot(mark(as.numeric(model$coeff_summary), as.numeric(summary(model.r)$coefficients)))
 ```
 
@@ -89,8 +89,8 @@ Note: `ANOVA( )` automatically fit the model with an intercept.
 #### _(a)_ Example of obtaining sequential sums of squares. 
 
 ```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
-library(datasets)
-library(bench)
+require("datasets")
+require("bench")
 ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Sequential")
 stats::anova(lm(mpg ~ cyl + wt + disp, mtcars))
 ANOVAnumeric <- as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")))
