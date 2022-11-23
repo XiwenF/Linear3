@@ -31,7 +31,7 @@
 #'data(mtcars)
 #'attach(mtcars)
 #'model <- lr(mpg~cyl + wt + qsec + disp, mtcars)
-#'outlierinfluence(mtcars, lr.model, option = c("dffits"))
+#'outlierinfluence(mtcars, model, option = c("dffits"))
 #'outlierinfluence(mtcars, model, option = c("cd"))
 #'
 #'@export

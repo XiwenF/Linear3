@@ -3,8 +3,8 @@
 #'This set of plotting functions is used to plot
 #'DFFITS, Cook's Distance separately
 #'
-#'@usage
-#'\itemize{
+#'
+#'\describe{
 #'   \item{plotdffit(lm.model)} - {Plot a DFFITS graph and indicate the subject of the outlier}
 #'   \item{plotcd(lm.model)}- {Plot a Cook's Distance graph and indicate the subject of the outlier}
 #'}
@@ -13,8 +13,6 @@
 #'
 #'@examples
 #'require(ggplot2)
-#'data(mtcars)
-#'attach(mtcars)
 #'model <- lm(mpg~cyl + wt + qsec + disp, mtcars)
 #'plotdffits(model)
 #'plotcd(model)
