@@ -1,8 +1,5 @@
 test_that("lr works", {
   expect_equal(as.numeric(lr(mpg ~ cyl + wt, mtcars)$coefficients), as.numeric(lm(mpg ~ cyl + wt, mtcars)$coefficients))
-  expect_equal(as.numeric(lr(mpg ~ cyl + wt, mtcars,na.action='omit')$coefficients), as.numeric(lm(mpg ~ cyl + wt, mtcars,na.action('na.omit'))$coefficients))
-  expect_equal(as.numeric(lr(mpg ~ cyl + wt, mtcars,na.action='fail')$coefficients), as.numeric(lm(mpg ~ cyl + wt, mtcars,na.action('na.fail'))$coefficients))
-  expect_equal(as.numeric(lr(mpg ~ cyl + wt, mtcars,na.action='impute')$coefficients), as.numeric(lm(mpg ~ cyl + wt, mtcars)$coefficients))
   expect_equal(as.numeric(lr(mpg ~ cyl + wt, mtcars)$residuals), as.numeric(summary(lm(mpg ~ cyl + wt, mtcars))$residuals))
   expect_equal(as.numeric(lr(mpg ~ cyl + wt + disp, mtcars)$fitted.values), as.numeric(lm(mpg ~ cyl + wt + disp, mtcars)$fitted.values))
   expect_equal(lr(mpg ~ cyl + wt, mtcars)$sigma, summary(lm(mpg ~ cyl + wt, mtcars))$sigma)
@@ -22,4 +19,9 @@ test_that("lr works", {
   expect_equal(as.numeric(lr(mpg~cyl+wt, mtcars)$ex_stud_res), as.numeric(rstudent(lm(mpg~cyl+wt, mtcars))))
 })
 
-
+test_that("lr na.action works", {
+  mtcars$cyl[1]<-NA
+  expect_output(print(lr(mpg~cyl+wt, mtcars, na.action = 'omit')$coefficients))
+  expect_output(print(lr(mpg~cyl+wt, mtcars, na.action = 'impute')$coefficients))
+  expect_error(lr(mpg~cyl+wt, mtcars, na.action ='fail')$coefficients)
+})
