@@ -32,12 +32,7 @@ ANOVA <- function(formula, data, type, na.action = 'omit'){
   X <- matrix(c(rep(1,n), as.matrix(data[covar])), n, p)
   Y <- as.matrix(data[as.character(formula[[2]])], n, 1)
 
-  # Dimensional inspection
-  if(nrow(Y) != nrow(X)) {
-    stop("The number of predicted value and observed values does not match.")
-  } else if(nrow(X) < ncol(X)) {
-    stop("The number of observed values is less than the predicted value.")
-  }
+
 
   # Betas
   betas <- solve(t(X) %*% X) %*% t(X) %*% Y
