@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/XiwenF/Linear3/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/XiwenF/Linear3/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/XiwenF/Linear3/branch/master/graph/badge.svg)](https://app.codecov.io/gh/XiwenF/Linear3?branch=master)
 <!-- badges: end -->
 
 The goal of Linear3 is to ...
