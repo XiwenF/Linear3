@@ -132,8 +132,6 @@ lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action
  sig <- sapply(1:length(p_value), function(i) {
    if(p_value[i] < 0.001){sig[i] <- '***'}
    else if (p_value[i] < 0.01){sig[i] <- '** '}
-   else if (p_value[i] < 0.05){sig[i] <- '*  '}
-   else if (p_value[i] < 0.1){sig[i] <- '.  '}
    else{sig[i] <- ''}
  })
  coef.tb <- cbind(signif(Coeff_summary,4), sig)

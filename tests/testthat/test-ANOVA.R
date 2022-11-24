@@ -9,3 +9,21 @@ test_that("ANOVA works", {
   expect_equal(as.numeric(ANOVA(mpg ~ wt + cyl, mtcars, type = "Partial")["F value"][3,]), anova(lm(mpg ~ wt + cyl, mtcars))$"F value"[2])
   expect_equal(as.numeric(ANOVA(mpg ~ wt + cyl, mtcars, type = "Partial")["Pr(>F)"][3,]), anova(lm(mpg ~ wt + cyl, mtcars))$"Pr(>F)"[2])
 })
+test_that("dimension check", {
+  show_condition <- function(code) {
+    tryCatch(code,
+             error = function(c) "error",
+             warning = function(c) "warning",
+             message = function(c) "message"
+    )
+  }
+  # Y is longer than X
+  Y = matrix(c(2,3,4,5,6),5,1)
+  X = matrix(c(1.1,2.2,3.3,4.5),4,1)
+  expect_equal(show_condition(lr(Y, X)),"error")
+
+  # q is greater than n (3>2 in the following case)
+  Y = matrix(c(2,3),2,1)
+  X = matrix(c(1.2,2.2,3.4,2.3,3.5,4.4),2,3)
+  expect_equal(show_condition(lr(Y, X)),"error")
+})
