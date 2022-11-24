@@ -25,12 +25,8 @@
 #'
 ANOVA <- function(formula, data, type, na.action = 'omit'){
   #get indices of which covariates to keep
-  covar<-all.vars(formula)
-  index<-rep(0,length(covar))
-  for (i in 1:length(covar)){
-    index[i]<-which(colnames(data)==covar[i])
-  }
-  data<-data[,index]
+  covar<-attr(terms(formula(formula)), which = "term.labels")
+  data <- na.omit(data)
   n <- nrow(data)
   p<-length(covar)+1
   X <- matrix(c(rep(1,n), as.matrix(data[covar])), n, p)

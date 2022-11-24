@@ -1,0 +1,11 @@
+test_that("ANOVA works", {
+  expect_equal(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")["Sum Sq"])) , anova(lm(mpg ~ cyl + wt, mtcars))$"Sum Sq")
+  expect_equal(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")["Df"])) , anova(lm(mpg ~ cyl + wt, mtcars))$"Df")
+  expect_equal(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")["Mean Sq"])) , anova(lm(mpg ~ cyl + wt, mtcars))$"Mean Sq")
+  expect_equal(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")["F value"])) , anova(lm(mpg ~ cyl + wt, mtcars))$"F value")
+  expect_equal(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")["Pr(>F)"])) , anova(lm(mpg ~ cyl + wt, mtcars))$"Pr(>F)")
+  expect_equal(as.numeric(ANOVA(mpg ~ wt + cyl, mtcars, type = "Partial")["Sum Sq"][3,]), anova(lm(mpg ~ wt + cyl, mtcars))$"Sum Sq"[2])
+  expect_equal(as.numeric(ANOVA(mpg ~ wt + cyl, mtcars, type = "Partial")["Df"][3,]), anova(lm(mpg ~ wt + cyl, mtcars))$"Df"[2])
+  expect_equal(as.numeric(ANOVA(mpg ~ wt + cyl, mtcars, type = "Partial")["F value"][3,]), anova(lm(mpg ~ wt + cyl, mtcars))$"F value"[2])
+  expect_equal(as.numeric(ANOVA(mpg ~ wt + cyl, mtcars, type = "Partial")["Pr(>F)"][3,]), anova(lm(mpg ~ wt + cyl, mtcars))$"Pr(>F)"[2])
+})
