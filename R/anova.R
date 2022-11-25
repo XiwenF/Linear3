@@ -32,14 +32,11 @@ ANOVA <- function(formula, data, type, na.action = 'omit'){
   X <- matrix(c(rep(1,n), as.matrix(data[covar])), n, p)
   Y <- as.matrix(data[as.character(formula[[2]])], n, 1)
 
-
-
   # Betas
   betas <- solve(t(X) %*% X) %*% t(X) %*% Y
 
   #Fitted values
   fitted <- X %*% betas
-
   resid <- Y - fitted
   SSE <- t(resid) %*% resid
   MSE <- SSE / (n - p) ## Same SSE for all SS

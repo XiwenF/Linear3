@@ -1,5 +1,5 @@
 ---
-title: "tutorial"
+title: "Tutorial"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{tutorial}
@@ -14,10 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-The Linear3 package aims to provide almost all the information needed for linear regression, with the exception of diagnostics. The `lr()` function mimics the output of `lm()`, `summary(lm())`, `confint()`, `hatvalues(lm())`, `rsstandard()` and `rstudent()` . The `anova()` function mimics the output of the `anova(lm( ))` function, for continuous sums of squares, and the output of the `car::Anova(lm( ), type="III")` function, for partial sum of squares.
+The Linear3 package aims to provide almost all the information needed for linear regression, with the exception of diagnostics. The `lr()` function mimics the output of `lm()`, `summary(lm())`, `confint()`, `hatvalues(lm())`, `rsstandard()` and `rstudent()` . The `ANOVA()` function mimics the output of the `anova(lm( ))` function, for continuous sums of squares, and the output of the `car::Anova(lm( ), type="III")` function, for partial sum of squares.
 
 ```{r setup}
 library(Linear3)
+library(stats)
 ```
 
 ## Example of the using `lr( )` function. 
@@ -50,7 +51,7 @@ library(bench)
 plot(mark(as.numeric(model$coeff_summary),as.numeric(summary(model.r)$coefficients)))
 ```
 
-Using this naive built-in dataset `mtcars`, the `lr( )` function performs better than the `lm( )` function. One of the main reasosn why `lr(  )` is superior to the built-in `r` function is that there is no need to call another function for coefficient aggregation. 
+Using this naive built-in dataset `mtcars`, the `lr( )` function performs better than the `lm( )` function. One of the main reasosns why `lr(  )` is superior to the built-in `r` function is that there is no need to call another function for coefficient aggregation. 
 
 Next, let's demonstrate two more examples using `lr( )` and compare with the original `r` function.
 
@@ -78,6 +79,25 @@ plot(mark(as.numeric(model2$CI), as.numeric(confint(model.r2))))
 
 Also, the numeric outputs of both functions is the same. However, `lr( )` is superior to the built-in `r` function because we don't need to call another function to compute confidence intervals for the fitted model. 
 
+#### _(c)_ Usage of `na.action` parameter
+**Use na.action 'omit'**
+*Note: na.action defaults to omit if call is excluded*
+```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
+print(lr(mpg ~ cyl + wt , mtcars)$coefficients)
+```
+
+**Use na.action 'impute'**
+*note slight difference from previous example: we've imputed missing values with column means*
+```{r fig.align ='center', fig.width= 7, fig.height = 5, message=FALSE}
+print(lr(mpg ~ cyl + wt , mtcars,na.action = 'impute')$coefficients)
+```
+
+**Use na.action 'fail'**
+*we expect an error as the dataset contains missing variables, once you run the example there will be an error message*
+#mtcars$cyl[1]<-NA
+#lr(mpg ~ cyl + wt , mtcars,na.action = 'fail')$coefficients
+
+
 ## Example of the using `ANOVA( )` function.
 
 We can choose to obtain an ANOVA table for sequential sums of squares or partial sums of squares. 
@@ -91,9 +111,9 @@ require("bench")
 require("stats")
 ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Sequential")
 stats::anova(lm(mpg ~ cyl + wt + disp, mtcars))
-MyNumeric <- as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")))
-RNumeric <- as.numeric(unlist(stats::anova(lm(mpg ~ cyl + wt, mtcars))))
-all.equal(MyNumeric, RNumeric)
+ANOOVAnumeric <- as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential")))
+Rnumeric <- as.numeric(unlist(stats::anova(lm(mpg ~ cyl + wt, mtcars))))
+all.equal(ANOOVAnumeric, Rnumeric)
 plot(mark(as.numeric(unlist(ANOVA(mpg ~ cyl + wt, mtcars, type = "Sequential"))), as.numeric(unlist(stats::anova(lm(mpg ~ cyl + wt, mtcars))))))
 ```
 
@@ -115,4 +135,34 @@ We show again that `ANOVA( )` and the original `r` function `Anova( )` from the 
 
 Hint: Since the output of `ANOVA( )` is a data.frame, we can use all the means of data frame to index or select the required elements such as `ANOVA(mpg ~ cyl + wt + disp, mtcars, type = "Partial")["Sum Sq"]`.
 
+## Example of the using `h_matrix( )` function.
+
+Manually testing if max leverage is the same from `h_matrix` and `hatvalues`.
+
+```{r}
+h <- hatvalues(lm(mpg~cyl+wt, mtcars))
+all.equal(as.numeric(h_matrix(lr(mpg~cyl+wt, mtcars))[1]), unname(h[which.max(h)]))
+bench::mark(as.numeric(h_matrix(lr(mpg~cyl+wt, mtcars))[1]), unname(h[which.max(h)]))
+plot(bench::mark(hmatrix = as.numeric(h_matrix(lr(mpg~cyl+wt, mtcars))[1]), original = unname(h[which.max(h)])))
+```
+
+## Example of the using `outlierinfluence( )` function.
+
+#### _(a)_ Example of computing outlier influence DFFITS.
+
+```{r}
+all.equal(outlierinfluence(mtcars, lr(mpg ~ cyl + wt, mtcars), option = "dffits") , as.numeric(dffits(lm(mpg~cyl+wt, mtcars))))
+result_ff <- bench::mark(original = as.numeric(dffits(lm(mpg~cyl+wt, mtcars))),mine = outlierinfluence(mtcars, lr(mpg ~ cyl + wt, mtcars), option = "dffits"))
+print(result_ff)
+plot(result_ff)
+```
+
+#### _(b)_ Example of computing outlier influence cook's distance.
+
+```{r}
+all.equal(outlierinfluence(mtcars, lr(mpg ~ cyl + wt, mtcars), option = "cd") , as.numeric(cooks.distance(lm(mpg~cyl+wt, mtcars))))
+result_ff <- bench::mark(original =  as.numeric(cooks.distance(lm(mpg~cyl+wt, mtcars))),mine = outlierinfluence(mtcars, lr(mpg ~ cyl + wt, mtcars), option = "cd"))
+print(result_ff)
+plot(result_ff)
+```
 

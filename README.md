@@ -10,7 +10,12 @@
 coverage](https://codecov.io/gh/XiwenF/Linear3/branch/master/graph/badge.svg)](https://app.codecov.io/gh/XiwenF/Linear3?branch=master)
 <!-- badges: end -->
 
-The goal of Linear3 is to …
+The goal of Linear3 is to mimic existing R functions closely related to
+fitting linear regression models and anova. The imitated functions
+include: lm(), summary(), confint(), hatvalues(), rstudent(),
+rstandard(), anova(), Anova(Model, Type = “III”), some output can be
+used \$ to extract from lm() and summary() such as residuals, fitted
+values and etc.
 
 ## Installation
 
@@ -19,8 +24,26 @@ You can install the development version of Linear3 from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("XiwenF/Linear3")
+# install.packages("bench")
+# install.packages("ggbeeswarm")
+devtools::install_github("XiwenF/Linear3",build_vignettes = T)
 ```
+
+## Features
+
+Linear3::lr() is used to fit simple linear regression or multiple linear
+regression. When fitting the model, you can use the option
+include.intercept to decide whether to include or exclude the intercept.
+The function doesn’t explicitly render any output until you extract the
+desired output with the name after \$. To learn more about items that
+can be extracted from this function, go through ?lr help page for
+details.
+
+Linear3::ANOVA() is used to obtain the analysis of variance table. You
+can choose to obtain a sequential sum of squares ANOVA table or a
+partial sum of squares ANOVA table. The output is in a data.frame. For
+more detailed usage of this function, please refer to the help page:
+?ANOVA.
 
 ## Example
 
@@ -29,31 +52,24 @@ This is a basic example which shows you how to solve a common problem:
 ``` r
 library(Linear3)
 ## basic example code
+lr(mpg ~ cyl + wt, mtcars)$coefficients ## Fit a model with intercept and extract coefficients
+#>           Coefficients
+#> intercept    39.686261
+#> cyl          -1.507795
+#> wt           -3.190972
+ANOVA(mpg ~ cyl + wt + qsec, mtcars, type = "Sequential") ## Get sequential sums of squares 
+#>           Df           Sum Sq          Mean Sq          F value
+#> cyl        1 817.712952354623 817.712952354623 126.773990941625
+#> wt         1 117.162268889444 117.162268889444 18.1642327813455
+#> qsec       1 10.5673919599594 10.5673919599594 1.63831384687119
+#> Residuals 28 180.604574296886 6.45016336774592                 
+#>                         Pr(>F)
+#> cyl       6.59347372262592e-12
+#> wt        0.000207416926559177
+#> qsec         0.211060593447255
+#> Residuals
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+For a more detailed tutorial and comparison with existing R functions,
+please refer to the booklet by following code browseVignettes(package =
+‘Linear3’).

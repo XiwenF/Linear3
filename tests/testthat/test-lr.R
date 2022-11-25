@@ -25,3 +25,4 @@ test_that("lr na.action works", {
   expect_output(print(lr(mpg~cyl+wt, mtcars, na.action = 'impute')$coefficients))
   expect_error(lr(mpg~cyl+wt, mtcars, na.action ='fail')$coefficients)
 })
+

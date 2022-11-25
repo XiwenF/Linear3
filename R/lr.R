@@ -85,7 +85,6 @@ lr <- function(formula,data, include.intercept = TRUE, predict = NULL, na.action
  }
  Y <- as.matrix(data[as.character(formula[[2]])], n, 1)
 
-
  # Betas
  betas <- solve(t(X) %*% X) %*% t(X) %*% Y
  if(p == (length(labels(terms(formula))) + 1)){

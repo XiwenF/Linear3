@@ -66,6 +66,6 @@ outlierinfluence <- function(data, lr.model, option = c("dffits", "cd"), high.in
     } else {
       return(cd)
     }
- }
   }
+}
 
