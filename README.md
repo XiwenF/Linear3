@@ -45,6 +45,15 @@ partial sum of squares ANOVA table. The output is in a data.frame. For
 more detailed usage of this function, please refer to the help page:
 ?ANOVA.
 
+Linear3::h_matrix() is used to computes leverage and its descriptive
+statistics. For more detailed usage of this function, please refer to
+the help page: ?h_matrix.
+
+Linear3::outlierinfluence() is used to computes two diagnostic
+statistics for measuring influential points(DFFITS and Cook’s Distance).
+For more detailed usage of this function, please refer to the help page:
+?outlierinfluence.
+
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
@@ -68,6 +77,19 @@ ANOVA(mpg ~ cyl + wt + qsec, mtcars, type = "Sequential") ## Get sequential sums
 #> wt        0.000207416926559177
 #> qsec         0.211060593447255
 #> Residuals
+h_matrix(lr(mpg ~ cyl + wt, mtcars)) ## Find the index of the maximum leverage value 
+#> $`maximum hi`
+#> [1] 0.2421225
+#> 
+#> $`hi>2*mean(H)`
+#> [1] 0.2015136 0.2421225 0.2230329
+outlierinfluence(mtcars, lr(mpg ~ cyl + wt, mtcars), option = c("dffits")) ## Compute the DIFFTS for measuring points of influence
+#>  [1] -0.12182337 -0.03589338 -0.42000646  0.07246909  0.26427631 -0.12133687
+#>  [7] -0.22998664  0.16281223 -0.13755030 -0.03669621 -0.14909435  0.18559308
+#> [13]  0.17384547 -0.03893196 -0.10147599  0.02085543  1.02165825  0.75429239
+#> [19]  0.28604885  0.90808029 -0.54371701 -0.10823905 -0.18776697 -0.22166541
+#> [25]  0.42418522 -0.02277524 -0.09837594  0.25222094 -0.26450828 -0.17700048
+#> [31] -0.14572913 -0.47512649
 ```
 
 For a more detailed tutorial and comparison with existing R functions,

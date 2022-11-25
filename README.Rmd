@@ -39,6 +39,10 @@ Linear3::lr() is used to fit simple linear regression or multiple linear regress
 
 Linear3::ANOVA() is used to obtain the analysis of variance table. You can choose to obtain a sequential sum of squares ANOVA table or a partial sum of squares ANOVA table. The output is in a data.frame. For more detailed usage of this function, please refer to the help page: ?ANOVA.
 
+Linear3::h_matrix() is used to computes leverage and its descriptive statistics. For more detailed usage of this function, please refer to the help page: ?h_matrix.
+
+Linear3::outlierinfluence() is used to computes two diagnostic statistics for measuring influential points(DFFITS and Cook's Distance). For more detailed usage of this function, please refer to the help page: ?outlierinfluence.
+
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
@@ -48,6 +52,8 @@ library(Linear3)
 ## basic example code
 lr(mpg ~ cyl + wt, mtcars)$coefficients ## Fit a model with intercept and extract coefficients
 ANOVA(mpg ~ cyl + wt + qsec, mtcars, type = "Sequential") ## Get sequential sums of squares 
+h_matrix(lr(mpg ~ cyl + wt, mtcars)) ## Find the index of the maximum leverage value 
+outlierinfluence(mtcars, lr(mpg ~ cyl + wt, mtcars), option = c("dffits")) ## Compute the DIFFTS for measuring points of influence
 ```
 
 For a more detailed tutorial and comparison with existing R functions, please refer to the booklet by following code browseVignettes(package = 'Linear3').
